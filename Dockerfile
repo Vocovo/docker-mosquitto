@@ -1,4 +1,4 @@
-ARG MOSQUITTO_VERSION=1.6.15
+ARG MOSQUITTO_VERSION=2.0.0
 FROM eclipse-mosquitto:${MOSQUITTO_VERSION}
 
 # Install Tcl to be able to run the slicing script, and the root certificates
