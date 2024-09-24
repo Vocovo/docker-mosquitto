@@ -2,9 +2,8 @@ name: Build versioned image
 run-name: Build versioned image by @${{ github.actor }}
 
 on:
-  push:
-    tags:
-      - v**
+  workflow_dispatch
+
 
 defaults:
   run:
