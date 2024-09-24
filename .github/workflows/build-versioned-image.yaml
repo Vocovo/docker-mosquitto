@@ -19,12 +19,14 @@ jobs:
       - name: Get docker image tag
         id: docker-image-tag
         run: |
-          ref='${{ github.ref_name }}'
-          echo "Tag ref is ${ref}"
-          # replace any characters not permitted in a docker tag with an underscore
-          tag="${ref//[^A-Za-z0-9\.\-_]/_}"
-          echo "Sanitised tag ref is ${tag}"
-          echo "tag=${tag}" >>"${GITHUB_OUTPUT}"
+          sha_short=$(git rev-parse --short HEAD)
+          timestamp=$(date +'%Y%m%d-%H%M%S')
+          mosquitto_version="2.0.18"
+          sha_tag="${mosquitto_version}-${sha_short}"
+          timestamp_tag="${mosquitto_version}-${timestamp}"
+          echo "Docker image tags are ${sha_tag} and ${timestamp_tag}"
+          echo "sha_tag=${sha_tag}" >>"${GITHUB_OUTPUT}"
+          echo "timestamp_tag=${timestamp_tag}" >>"${GITHUB_OUTPUT}"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -40,4 +42,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            "vocovo/docker-mosquitto:${{ steps.docker-image-tag.outputs.tag }}"
+            "vocovo/docker-mosquitto:${{ steps.docker-image-tag.outputs.sha_tag }}"
+            "vocovo/docker-mosquitto:${{ steps.docker-image-tag.outputs.timestamp_tag }}"
