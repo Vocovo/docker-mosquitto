@@ -15,14 +15,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Get ref name
+        id: github-ref-name
+        run: |
+          ref='${{ github.ref_name }}'
+          echo "Tag ref is ${ref}"
+          # replace any characters not permitted in a docker tag with an underscore
+          ref_name="${ref//[^A-Za-z0-9\.\-_]/_}"
+          echo "Sanitised ref name is ${ref_name}"
+          echo "ref=${ref_name}" >>"${GITHUB_OUTPUT}"
+
       - name: Get docker image tag
         id: docker-image-tag
         run: |
           sha_short=$(git rev-parse --short HEAD)
-          timestamp=$(date +'%Y%m%d-%H%M%S')
-          mosquitto_version="2.0.18"
-          sha_tag="${mosquitto_version}-${sha_short}"
-          timestamp_tag="${mosquitto_version}-${timestamp}"
+          timestamp=$(date +'%Y%m%d_%H%M%S')
+          sha_tag="${ref}-${sha_short}"
+          timestamp_tag="${ref}-${timestamp}"
           echo "Docker image tags are ${sha_tag} and ${timestamp_tag}"
           echo "sha_tag=${sha_tag}" >>"${GITHUB_OUTPUT}"
           echo "timestamp_tag=${timestamp_tag}" >>"${GITHUB_OUTPUT}"
