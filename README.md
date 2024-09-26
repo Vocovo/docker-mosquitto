@@ -86,3 +86,13 @@ Example topic list:
 topic # both 0
 topic $SYS/# both 0
 ```
+
+## Docker Image and GitHub Release creation
+
+To create a Docker Image from this repo, first create a GitHub release. This can be done by going to the [releases page](https://github.com/Vocovo/docker-mosquitto/releases) in GitHub.
+
+The following naming scheme is used for the release and the git tag `v<mosquitto_version>+<count>` (e.g. `v2.0.18+1`).
+
+After the release is created, run the **Build Versioned Image** workflow with the correct tag selected. This will build the Docker Image.
+
+Final step is to update the GitHub release information and attach the produced Docker image.
