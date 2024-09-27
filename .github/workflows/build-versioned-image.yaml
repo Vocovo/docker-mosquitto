@@ -30,6 +30,7 @@ jobs:
         run: |
           sha_short=$(git rev-parse --short HEAD)
           timestamp=$(date +'%Y%m%d_%H%M%S')
+          ref="${{ steps.github-ref-name.outputs.ref }}"
           sha_tag="${ref}-${sha_short}"
           timestamp_tag="${ref}-${timestamp}"
           echo "Docker image tags are ${sha_tag} and ${timestamp_tag}"
